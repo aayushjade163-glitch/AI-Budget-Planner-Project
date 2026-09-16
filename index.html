@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledger - AI Budget Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body data-currency="{{ currency }}">
+
+<header class="bar">
+  <span class="mark">Ledger</span>
+  <span class="tag">AI budget planner</span>
+  <div class="running">
+    <span class="running-label">balance</span>
+    <span class="running-figure" id="headline">{{ currency }}0</span>
+  </div>
+</header>
+
+{% if not has_key %}
+<p class="notice">No API key set. Open <code>app.py</code>, paste your key into <code>API_KEY</code>, and restart the server.</p>
+{% endif %}
+
+<main>
+  <!-- ledger column -->
+  <aside class="ledger">
+    <dl class="totals">
+      <div><dt>Money in</dt><dd class="credit" id="t-income">0</dd></div>
+      <div><dt>Money out</dt><dd class="debit" id="t-expense">0</dd></div>
+      <div><dt>Left over</dt><dd id="t-balance">0</dd></div>
+      <div><dt>Saved</dt><dd id="t-rate">0%</dd></div>
+    </dl>
+
+    <section>
+      <h2>Income</h2>
+      <ul class="entries" id="list-income"></ul>
+    </section>
+
+    <section>
+      <h2>Expenses</h2>
+      <ul class="entries" id="list-expenses"></ul>
+    </section>
+
+    <section id="goals-block" hidden>
+      <h2>Goals</h2>
+      <ul class="entries" id="list-goals"></ul>
+    </section>
+
+    <div class="manual">
+      <input id="m-label" placeholder="Groceries" aria-label="Entry name">
+      <input id="m-amount" placeholder="2500" inputmode="decimal" aria-label="Amount">
+      <div class="manual-row">
+        <button class="btn-in" data-kind="income">Add income</button>
+        <button class="btn-out" data-kind="expense">Add expense</button>
+      </div>
+      <button class="btn-reset" id="reset">Start a new budget</button>
+    </div>
+  </aside>
+
+  <!-- chat column -->
+  <section class="chat">
+    <div class="thread" id="thread">
+      <div class="msg bot">
+        <p>I keep your budget while we talk. Tell me what you earn and what you spend
+        and I will write it down, then show you where the money is actually going.</p>
+        <p>Try: <em>I make 45000 a month, rent is 12000 and I spend about 8000 on food.</em></p>
+      </div>
+    </div>
+
+    <form class="composer" id="composer">
+      <textarea id="input" rows="1" placeholder="Talk to your budget..." autocomplete="off"></textarea>
+      <button type="submit" id="send">Send</button>
+    </form>
+  </section>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
